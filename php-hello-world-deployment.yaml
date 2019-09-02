@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+#  namespace: random-namespace # it can be anything random
+spec:
+  selector:
+    matchLabels:
+      run: hello-world
+  replicas: 4 # we want 4 instances of this running
+  strategy: 
+    rollingUpdate: # this ensures that if we add a new update, we only have one application down 
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: hello-world
+    spec:
+      containers:
+      - name: php-hello-world
+        image: ichtrojan/php-hello-world
+        imagePullPolicy: IfNotPresent    
+        readinessProbe:
+          httpGet: # Calls an endpoint and check if returns a status code < 400
+            path: /
+            port: liveness-port
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 15
+        livenessProbe: # Checks if the port is open on the container
+          tcpSocket:
+            port: liveness-port
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 15
+        resources: # We can restrict how much resources we'd like to give to containers also
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports: 
+        - name: liveness-port
+          containerPort: 80
