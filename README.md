@@ -330,7 +330,7 @@ spec:
     port: 80
     targetPort: 80
     name: http
-  type: ClusterIP
+  type: LoadBalancer
 ```
 
 Once you've written the service, you can apply it using:
@@ -345,7 +345,20 @@ To test the service as we have no load balancer, we can use the minikube applica
 minikube service hello-world-service
 ```
 
-This would return the response from the container which has the format `Hello World. The time is <time>` where \<time> is the current time.
+This would return the response from the container which has the format 
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+  </head>
+  <body>
+    Hello World. The time is "<time>"  </body>
+</html>
+```
+
+ where \<time> is the current time.
 
 If that worked, then you've successfully created a deployment and matched it to a service.
 
