@@ -324,7 +324,11 @@ spec:
     port: 80
     targetPort: 3000
     name: http
+<<<<<<< HEAD
   type: ClusterIP
+=======
+  type: LoadBalancer
+>>>>>>> bc8f829bb99be1b7baaf4760733d2a002bede217
 ```
 
 
