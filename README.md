@@ -289,6 +289,12 @@ spec:
           containerPort: 80
 ```
 
+You can apply this by running the command:
+
+```bash
+kubectl apply -f php-hello-world-deployment.yaml
+```
+
 ## Exposing our Deployment using Services
 
 When we create a deployment, we start our application using containers that run within our cluster and will do so using the configuration which we have specified. To be access the deployment, we need to create a service.
@@ -314,30 +320,34 @@ Enough of the talk, let's write a service for our hello-world application.
 apiVersion: v1
 kind: Service
 metadata:
-  name: random-service
-  namespace: random-namespace
+  name: hello-world-service
+# namespace: random-namespace # you can likewise add a namespace to a service too
 spec:
   selector:
-    run: random-deployment
+    run: hello-world
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 3000
+    targetPort: 80
     name: http
-<<<<<<< HEAD
   type: ClusterIP
-=======
-  type: LoadBalancer
->>>>>>> bc8f829bb99be1b7baaf4760733d2a002bede217
 ```
 
+Once you've written the service, you can apply it using:
 
+```bash
+kubectl apply -f php-hello-world-service.yaml
+```
 
-We'd be using a guide on qwiklab to run and setup clusters on Google Cloud. 
+To test the service as we have no load balancer, we can use the minikube application to send requests to our service
 
-Visit here to find it out and follow the instructions to deploy your application successfully:
+```bash
+minikube service hello-world-service
+```
 
-[https://www.qwiklabs.com/focuses/564?parent=catalog](https://www.qwiklabs.com/focuses/564?parent=catalog)
+This would return the response from the container which has the format `Hello World. The time is <time>` where <time> is the current time.
+
+If that worked, then you've successfully created a deployment and matched it to a service.
 
 For those on linux wanting to experiment a lot more than the previous guide offers, another one was made with linux in particular. All the steps for setting it up on a linux environment are outlined here also:
 
