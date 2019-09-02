@@ -120,8 +120,7 @@ ReplicaSet - Similar Pods Running Together
 
 Deployment -  A higher group built on a collection on Pods which may or may not be similar
 
-StatefulSet - An application which has Volume 
-requirements and should not start unless it is offered a separate and persistent space to store files
+StatefulSet - An application which has Volume requirements and should not start unless it is offered a separate and persistent space to store files
 
 DaemonSet - Just like a ReplicaSet but this one should be present on all nodes running in the cluster
 
@@ -142,8 +141,6 @@ Just as a deployment runs one or more pods, we have to think about how to access
 ![Kubernetes Service Pods](k8s-service-pods.png)
 > Source: https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0
 
-
-
 ## Building A Simple Hello World App
 
 In building a simple hello world app on Kubernetes, we require a couple things setup before we can start.
@@ -152,6 +149,75 @@ In building a simple hello world app on Kubernetes, we require a couple things s
 - Minikube
 
 Docker is what will run our containers and is referred to as a Container Runtime. For those willing to know more about Container Runtimes, Cgroups and the likes, visit the video [here](youtu.be/sK5i-N34im8).
+ 
+Minikube is a mini development kubernetes cluster which can be used for testing the features on k8s and performing various functions which we'd like to test such as deploying an application, configuring an ingress controller and all that.
+
+The installation for Docker has already been covered so let's look into installing kubernetes for the major OSes such as Linux, Windows and MacOS.
+
+### Installing K8S
+To get started with k8s, we need to be sure we have two applications installed
+ - Kubectl (Kubernetes Command Tool)
+ - Minikube (Cluster)
+
+
+#### [Installing Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl)
+Kubectl is the tool which would be used for interacting with the kubernetes control plane hosted by minikube. 
+The installation differs depending on the operating system but the installation guide for all major OSes are listed below for better comprehension.
+
+On Linux, we can run the following commands to install the latest kubectl on a neutral binary use basis 
+```bash
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+kubectl version
+```
+
+On MacOS, we can install kubectl using the same approach. I defer from using brew as the binary approach is the least dependency driven approach so there would be few errors for those running. It follows the same approach as that of Linux.
+```bash
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+kubectl version
+```
+
+For windows users, kindly download the binary from the link [here](https://storage.googleapis.com/kubernetes-release/release/v1.15.0/bin/windows/amd64/kubectl.exe)
+Move the downloaded exe file to a location and add it to your PATH.
+
+Alternatively, download Docker Desktop on Windows which comes with Kubectl [here](https://docs.docker.com/docker-for-windows/install/)
+
+## Installing MiniKube
+
+To run Minikube, you need an hypervisor to run the cluster VM. An hypervisor is a tool used to control virtual machines.
+A common hypervisor is VirtualBox and that is the one which we'd be using in this tutorial.
+
+You can download the software [here](https://www.virtualbox.org/wiki/Downloads).
+
+Once VirtualBox has been installed, you can continue with the minikube installation.
+
+For linux, you can install the minikube application using the current commands:
+```bash
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  && chmod +x minikube
+
+sudo install minikube /usr/local/bin
+```
+
+For MacOS users, you can use the following commands to install minikube.
+
+```bash
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64 \
+  && chmod +x minikube
+
+sudo mv minikube /usr/local/bin
+```
+
+
+Windows users should kindly visit the link [here](https://kubernetes.io/docs/tasks/tools/install-minikube/#tab-with-md-2) to familiarize with the applications and installer links for minikube.
+
+
+## Starting Minikube
+
+To start using minikube, you can run the command `minikube` to get started with the options.
 
 We'd be using a guide on qwiklab to run and setup clusters on Google Cloud. 
 
