@@ -219,7 +219,7 @@ Windows users should kindly visit the link [here](https://kubernetes.io/docs/tas
 
 To start using minikube, you can run the command `minikube` to get started with the options.
 
-After installing it, you can start the application using the command
+After checking that, you can start the kubernetes cluster on minikube using the command
 
 ```bash
 minikube start
@@ -236,7 +236,7 @@ In Kubernetes, we use containers to spin up applications and as such we'd need a
 
 For this example, we'd be using the image from the docker beginner guide which has been uploaded to this  repo: [`ichtrojan/php-hello-world`](https://hub.docker.com/r/ichtrojan/php-hello-world)
 
-When deploying applications, we deploy them to a path called a namespace. A namespace is an abstraction of a sandbox which is used to break down the same applications in different zones, we can do this for testing purposes such as A/B testing where we might use different configurations but need both applications running to infer what the functions needed there might be.
+When deploying applications, we deploy them to a path called a namespace. A namespace is an abstraction of a sandbox which is used to break down the same application in different zones, we can do this for testing purposes such as A/B testing, where we might use different configurations but need both applications running to infer what the difference in runtime there might be.
 
 If a namespace is not specified, Kubernetes by default uses the `default` namespace.
 
@@ -305,21 +305,21 @@ And we can view further the pods which constitute the deployment
 
 ## Exposing our Deployment using Services
 
-When we create a deployment, we start our application using containers that run within our cluster and will do so using the configuration which we have specified. To be access the deployment, we need to create a service.
+When we create a deployment, we start our application using containers that run within our cluster and will do so using the configuration which we have specified. To access the deployment, we need to create a service.
  
-A service is an entrypoint to our application which defines which port should be open and how it can be accessed. What this means is that a service is binded to a port which is very true, so for each port which is open in our application, we have an accompanying service to open it to the world in the Kubernetes cluster. 
+A service is an entrypoint to our application which defines which port should be open and how it can be accessed. What this means is that a service is binded to a port, which is very true. So for each port which is open in our application, we have an accompanying service to open it to the world in the Kubernetes cluster. 
 
-If you rememeber that kubernetes is a cluster, that means that we can access our application from any cluster using the service name. This defeats the purpose of knowing which IP and port the application is deployed on.
+If you rememeber that kubernetes is a cluster, that means that we can access our application from any node using the service name. This defeats the purpose of knowing which IP and port the application is deployed on.
 
-If we have an application that we don't need exposed, we just don't create a service for the application and it's securely hosted on the cluster.
+If we have an application that we don't need exposed, we  don't create a service for the application and it's securely hosted on the cluster.
 
 When it comes down to services, we can have the following types:
+
 NodePort - This is the default host mapping, we basically host the port of our application on some arbitrary port in the range of 30000-32767. All pods in our cluster have a node port which all requests to the service get forwarded to.
 
+ClusterIP - When we have more than one replica which we'd like to forward traffic to, we use a clusterIP. This assigns the entire deployment a clusterIP which internally load balances all the requests to the pods which were previously created by the deployment, this service type has no NodePort. This ClusterIP can only be accessed internally and is not open to the world
 
-ClusterIP - When we have more than one replica which we'd like to forward traffic to, we use a clusterIP. This assigns the entire deployment a clusterIP which internally load balances all the requests to the node ports which were previously highlighted. This clusterIp can only be accessed internally and is not open to the world
-
-LoadBalancer - This is similar to the clusterIp service type but exposes the traffic outside the cluster. For a loadbalancer to work, we need a load balancer controller installed on the network. There are some software controllers such as [MetalLB](https://metallb.universe.tf) which allow us use load balancers on-prem without purchasing load balancing equipment like F5-Big IP. In general, such controllers are provided by cloud providers so most load balancer setups would happen on a cloud service such as GKE or AKS.
+LoadBalancer - This is similar to the ClusterIP service type but exposes the traffic outside the cluster. For a loadbalancer to work, we need a load balancer controller installed on the network. There are some software controllers such as [MetalLB](https://metallb.universe.tf) which allow us use load balancers on-prem without purchasing load balancing equipment like F5-Big IP. In general, such controllers are provided by cloud providers so most load balancer setups would happen on a cloud service such as GKE or AKS.
 
 Enough of the talk, let's write a service for our hello-world application.
 
@@ -338,7 +338,7 @@ spec:
     port: 80
     targetPort: 80
     name: http
-  type: LoadBalancer
+  type: LoadBalancer # We use a load balancer cause we want to access it outside the cluster
 ```
 
 Once you've written the service, you can apply it using:
@@ -349,13 +349,13 @@ kubectl apply -f php-hello-world-service.yaml
 
 ![Hello World Service](service.png)
 
-To test the service as we have no load balancer, we can use the minikube application to send requests to our service
+To test the service as we have no load balancer controller, we can use the minikube application to send requests to our service
 
 ```bash
 minikube service hello-world-service
 ```
 
-If you want to try it some other way, you can always curl the clusterIP too.
+If you want to try it some other way, you can always curl the ClusterIP too.
 ```bash
 curl $(kubectl get svc hello-world-service -o=jsonpath='{.spec.clusterIP}')
 ```
