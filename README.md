@@ -295,6 +295,14 @@ You can apply this by running the command:
 kubectl apply -f php-hello-world-deployment.yaml
 ```
 
+You can likewise check the status using the following commands:
+
+![List of deployments](deployment.png)
+
+And we can view further the pods which constitute the deployment
+
+![List of pods](pods.png)
+
 ## Exposing our Deployment using Services
 
 When we create a deployment, we start our application using containers that run within our cluster and will do so using the configuration which we have specified. To be access the deployment, we need to create a service.
@@ -339,10 +347,17 @@ Once you've written the service, you can apply it using:
 kubectl apply -f php-hello-world-service.yaml
 ```
 
+![Hello World Service](service.png)
+
 To test the service as we have no load balancer, we can use the minikube application to send requests to our service
 
 ```bash
 minikube service hello-world-service
+```
+
+If you want to try it some other way, you can always curl the clusterIP too.
+```bash
+curl $(kubectl get svc hello-world-service -o=jsonpath='{.spec.clusterIP}')
 ```
 
 This would return the response from the container which has the format 
