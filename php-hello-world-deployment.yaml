@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       run: hello-world
-  replicas: 4 # we want 4 instances of this running
+  replicas: 1 # we want 1 instances of this running
   strategy: 
     rollingUpdate: # this ensures that if we add a new update, we only have one application down 
       maxSurge: 1

@@ -252,7 +252,7 @@ spec:
   selector:
     matchLabels:
       run: hello-world
-  replicas: 4 # we want 4 instances of this running
+  replicas: 1 # we want 1 instances of this running
   strategy: 
     rollingUpdate: # this ensures that if we add a new update, we only have one application down 
       maxSurge: 1
@@ -345,7 +345,7 @@ To test the service as we have no load balancer, we can use the minikube applica
 minikube service hello-world-service
 ```
 
-This would return the response from the container which has the format `Hello World. The time is <time>` where <time> is the current time.
+This would return the response from the container which has the format `Hello World. The time is <time>` where \<time> is the current time.
 
 If that worked, then you've successfully created a deployment and matched it to a service.
 
