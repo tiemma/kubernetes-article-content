@@ -13,7 +13,7 @@ Kubernetes is a container orchestrator designed for applications that runs on co
 - Batch Execution
 - Horizontal Scaling
 
-Kubernetes is optimized mostly for a production environment where applications going down for a second or two is not required and there are a lot of things to monitor and manage. Otherwise called K8s, Kubernetes is a big tool with a lot of fancy nobs and buttons, and this article will try to explain and demystify some basics of what Kubernetes is.
+Kubernetes is used in production environments running applications that should be available at all times, with a lot of variables to monitor. Kubernetes also known as K8s is a big tool with a lot of fancy knobs and buttons, and this article will try to explain and demystify some basics of what Kubernetes is.
 
 ### Why you should you it
 
