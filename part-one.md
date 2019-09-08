@@ -1,6 +1,6 @@
 # Kubernetes for Beginners (Part One)
 
-![hero](https://res.cloudinary.com/ichtrojan/image/upload/v1567954183/k8_loq9qv.png)
+![hero](https://res.cloudinary.com/ichtrojan/image/upload/v1567954647/k8_ewr5nl.png)
 
 ## Introduction
 
