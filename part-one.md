@@ -1,5 +1,7 @@
 # Kubernetes for Beginners (Part One)
 
+![hero](https://res.cloudinary.com/ichtrojan/image/upload/v1567954183/k8_loq9qv.png)
+
 ## Introduction
 
 Kubernetes is a container orchestrator designed for applications that runs on containers and need the following things:
