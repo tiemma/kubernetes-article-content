@@ -17,7 +17,7 @@ Kubernetes is a container orchestrator designed for applications that runs on co
 
 Kubernetes is used in production environments running applications that should be available at all times, with a lot of variables to monitor. Kubernetes also known as K8s is a big tool with a lot of fancy knobs and buttons, and this article will try to explain and demystify some basics of what Kubernetes is.
 
-### Why you should you it
+### Why you should use it
 
 In the general process of deploying applications, we encounter various issues with the way we want to get it working. One problem with deploying applications in production before Kubernetes and other container orchestrators was the problem of managing resources. If we needed an application, we spun up a thing called a VM (Virtual Machine). A VM is a full-blown machine, we can otherwise refer to it as a Server, you can spin up a server using [MaxiHost Bare Metal Cloud](https://www.maxihost.com/bare-metal) quickly and easily. This machine in principle should only hold one application, including all its dependencies, which would have to be manually deployed via some CI process every time we wish to use it. This process was very stressful and required a lot of technical skills to manage various things such as networking, security, storage and all that which would all go to waste if the VM became unresponsive and stopped working due to varying factors.
 
