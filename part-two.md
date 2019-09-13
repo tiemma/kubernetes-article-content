@@ -1,78 +1,59 @@
 ## Building A Simple Hello World App
 
-In building a simple hello world app on Kubernetes, we require a couple things setup before we can start.
+## Introduction
 
-- Docker
-- Minikube
+In the first part of this article, you learnt about the Kubernetes architecture and what each basic component is and what they do. In this part we will be deploying a simple application on Kubernetes, this will give you a sense of how it works.
 
-Docker is what will run our containers and is referred to as a Container Runtime. For those willing to know more about Container Runtimes, Cgroups and the likes, visit the video [here](youtu.be/sK5i-N34im8).
+## Prerequisites
 
-Minikube is a mini development kubernetes cluster which can be used for testing the features on k8s and performing various functions which we'd like to test such as deploying an application, configuring an ingress controller and all that.
+* One bare metal server running Ubuntu, quickly setup one on MaxiHost
+* Docker installed on the host machine, you can find the installation steps in our [Docker for Beginners]() article.
 
-The installation for Docker has already been covered so let's look into installing kubernetes for the major OSes such as Linux, Windows and MacOS.
+## Step 1 - Install Kubernetes
 
-### Installing K8S
-To get started with k8s, we need to be sure we have two applications installed
- - Kubectl (Kubernetes Command Tool)
- - Minikube (Cluster)
+### Install Kubernetes Control Tool (Kubectl)
 
+Kubectl is the tool which would be used for interacting with the kubernetes control plane. run the following to have `kubectl` installed.
 
-#### [Installing Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl)
-Kubectl is the tool which would be used for interacting with the kubernetes control plane hosted by minikube.
-The installation differs depending on the operating system but the installation guide for all major OSes are listed below for better comprehension.
-
-On Linux, we can run the following commands to install the latest kubectl on a neutral binary use basis
 ```bash
 curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
+```
+
+This will download and install the latest stable release of `kubectl` on your host machine. Next, verify if `kubectl` is properly installed by checking for its version number.
+
+```bash
 kubectl version
 ```
 
-On MacOS, we can install kubectl using the same approach. I defer from using brew as the binary approach is the least dependency driven approach so there would be few errors for those running. It follows the same approach as that of Linux.
-```bash
-curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
-chmod +x ./kubectl
-sudo mv ./kubectl /usr/local/bin/kubectl
-kubectl version
+If the installation was successful it will return a response similar to this:
+
+```
+Client Version: version.Info{Major:"1", Minor:"15", GitVersion:"v1.15.3", GitCommit:"2d3c76f9091b6bec110a5e63777c332469e0cba2", GitTreeState:"clean", BuildDate:"2019-08-19T11:13:54Z", GoVersion:"go1.12.9", Compiler:"gc", Platform:"linux/amd64"}
 ```
 
-For windows users, kindly download the binary from the link [here](https://storage.googleapis.com/kubernetes-release/release/v1.15.0/bin/windows/amd64/kubectl.exe)
-Move the downloaded exe file to a location and add it to your PATH.
+### Install Minikube
 
-Alternatively, download Docker Desktop on Windows which comes with Kubectl [here](https://docs.docker.com/docker-for-windows/install/)
+To run Minikube, you need an hypervisor to run the cluster VM (Virtual Machine). An hypervisor is a tool used to control virtual machines. A common hypervisor is `VirtualBox`, and it will be used in this tutorial. To install `VirtualBox` run:
 
-## Installing MiniKube
-
-To run Minikube, you need an hypervisor to run the cluster VM. An hypervisor is a tool used to control virtual machines.
-A common hypervisor is VirtualBox and that is the one which we'd be using in this tutorial.
-
-You can download the software [here](https://www.virtualbox.org/wiki/Downloads).
-
-Once VirtualBox has been installed, you can continue with the minikube installation.
-
-For linux, you can install the minikube application using the current commands:
 ```bash
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
-  && chmod +x minikube
+sudo apt-get update
+sudo apt-get install virtualbox
+```
+
+Once that is done, you can now install `MiniKube` by running the following commands:
+
+```bash
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \ && chmod +x minikube
 
 sudo install minikube /usr/local/bin
 ```
 
-For MacOS users, you can use the following commands to install minikube.
-
-```bash
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64 \
-  && chmod +x minikube
-
-sudo mv minikube /usr/local/bin
-```
 
 
-Windows users should kindly visit the link [here](https://kubernetes.io/docs/tasks/tools/install-minikube/#tab-with-md-2) to familiarize with the applications and installer links for minikube.
 
-
-## Starting Minikube
+<!-- ## Starting Minikube
 
 To start using minikube, you can run the command `minikube` to get started with the options.
 
@@ -82,7 +63,7 @@ After checking that, you can start the kubernetes cluster on minikube using the 
 minikube start
 ```
 
-This would start the kubernetes cluster alongside an API on the default 8080 port binded to localhost.
+This would start the kubernetes cluster alongside an API on the default 8080 port binded to localhost. -->
 
 
 ## Deploying an application to Kubernetes
@@ -97,7 +78,7 @@ When deploying applications, we deploy them to a path called a namespace. A name
 
 If a namespace is not specified, Kubernetes by default uses the `default` namespace.
 
-Here's a sample deployment yaml template using the `ichtrojan/php-hello-world` image.
+Here's a sample deployment `yaml` template using the `ichtrojan/php-hello-world` image.
 
 ```yaml
 apiVersion: apps/v1
