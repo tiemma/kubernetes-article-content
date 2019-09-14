@@ -6,14 +6,14 @@ In the first part of this article, you learnt about the Kubernetes architecture 
 
 ## Prerequisites
 
-* One bare metal server running Ubuntu, quickly setup one on MaxiHost
+* One bare metal server running Ubuntu 18.08, quickly setup one on [MaxiHost]()
 * Docker installed on the host machine, you can find the installation steps in our [Docker for Beginners]() article.
 
 ## Step 1 - Install Kubernetes
 
 ### Install Kubernetes Control Tool (Kubectl)
 
-Kubectl is the tool which would be used for interacting with the kubernetes control plane. run the following to have `kubectl` installed.
+The `kubectl` is the tool which would be used for interacting with the kubernetes control plane. run the following to have `kubectl` installed.
 
 ```bash
 curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
@@ -33,9 +33,13 @@ If the installation was successful it will return a response similar to this:
 Client Version: version.Info{Major:"1", Minor:"15", GitVersion:"v1.15.3", GitCommit:"2d3c76f9091b6bec110a5e63777c332469e0cba2", GitTreeState:"clean", BuildDate:"2019-08-19T11:13:54Z", GoVersion:"go1.12.9", Compiler:"gc", Platform:"linux/amd64"}
 ```
 
+> **NOTE** </br>
+When you run `kubectl version` you will get `The connection to the server
+localhost:8080 was refused - did you specify the right host or port?` at the end of the response, just ignore it and move on with the next steps
+
 ### Install Minikube
 
-To run Minikube, you need an hypervisor to run the cluster VM (Virtual Machine). An hypervisor is a tool used to control virtual machines. A common hypervisor is `VirtualBox`, and it will be used in this tutorial. To install `VirtualBox` run:
+To run Minikube, you need an hypervisor to run the cluster VM (Virtual Machine). A hypervisor is a tool used to control virtual machines. A common hypervisor is `VirtualBox`, and it will be used in this tutorial. To install `VirtualBox` run:
 
 ```bash
 sudo apt-get update
@@ -58,8 +62,12 @@ minikube start
 
 ![minikube start](https://res.cloudinary.com/ichtrojan/image/upload/v1568423434/Screenshot_2019-09-14_at_2.05.22_AM_wpmpqf.png)
 
-This would start the kubernetes cluster alongside an API on the default `8080` port on localhost.
+This would start the kubernetes cluster alongside an API on the default `8080` port on localhost. If you run `kubectl version` you will get the version number for both `client version` and `server version`, the response would be similar to this:
 
+```
+Client Version: version.Info{Major:"1", Minor:"15", GitVersion:"v1.15.3", GitCommit:"2d3c76f9091b6bec110a5e63777c332469e0cba2", GitTreeState:"clean", BuildDate:"2019-08-19T11:13:54Z", GoVersion:"go1.12.9", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"15", GitVersion:"v1.15.2", GitCommit:"f6278300bebbb750328ac16ee6dd3aa7d3549568", GitTreeState:"clean", BuildDate:"2019-08-05T09:15:22Z", GoVersion:"go1.12.5", Compiler:"gc", Platform:"linux/amd64"}
+```
 
 ## Deploying an application to Kubernetes
 
