@@ -42,7 +42,7 @@ sudo apt-get update
 sudo apt-get install virtualbox
 ```
 
-Once that is done, you can now install `MiniKube` by running the following commands:
+Once that is done, you can now install `minikube` by running the following commands:
 
 ```bash
 curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \ && chmod +x minikube
@@ -50,20 +50,15 @@ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/miniku
 sudo install minikube /usr/local/bin
 ```
 
-
-
-
-<!-- ## Starting Minikube
-
-To start using minikube, you can run the command `minikube` to get started with the options.
-
-After checking that, you can start the kubernetes cluster on minikube using the command
+This will download the latest release of `minikube` and installs on the server. Once that is done we need to start `minikube`, you can start the kubernetes cluster on minikube using this command:
 
 ```bash
 minikube start
 ```
 
-This would start the kubernetes cluster alongside an API on the default 8080 port binded to localhost. -->
+![minikube start](https://res.cloudinary.com/ichtrojan/image/upload/v1568423434/Screenshot_2019-09-14_at_2.05.22_AM_wpmpqf.png)
+
+This would start the kubernetes cluster alongside an API on the default `8080` port on localhost.
 
 
 ## Deploying an application to Kubernetes
