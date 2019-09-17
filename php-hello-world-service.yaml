@@ -1,14 +1,21 @@
+# This is the path where the service k8s object can be found on apiserver
 apiVersion: v1
+# Here we specify what kind of k8s object we want to create
 kind: Service
+# Here, we specify various details on the k8s object
 metadata:
+# We specify the name of the service we want to create
   name: hello-world-service
-# namespace: random-namespace # you can likewise add a namespace to a service too
 spec:
+# Here, we specify the labels which we set on matchLabels to complete the reference
   selector:
     run: hello-world
+# To do the port mapping as discussed, we specify how each port should be handled
+# What port would be used on the container and what port would be exposed through the loadbalancer
+# We also configure what networking protocol we'd be accessing, TCP works for HTTP and other compliant protocols on its framework
   ports:
   - protocol: TCP
     port: 80
     targetPort: 80
     name: http
-  type: LoadBalancer
+  type: LoadBalancer # We use a load balancer cause we want to access it outside the cluster
