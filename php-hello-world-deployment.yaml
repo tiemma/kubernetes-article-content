@@ -18,6 +18,7 @@ spec:
       labels:
         run: hello-world
     spec:
+      hostNetwork: true
       containers:
       - name: php-hello-world
         image: ichtrojan/php-hello-world
