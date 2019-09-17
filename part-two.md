@@ -94,11 +94,6 @@ spec:
     matchLabels:
       run: hello-world
   replicas: 1 # we want 1 instances of this running
-  strategy:
-    rollingUpdate: # this ensures that if we add a new update, we only have one application down
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -108,26 +103,10 @@ spec:
       - name: php-hello-world
         image: ichtrojan/php-hello-world
         imagePullPolicy: IfNotPresent
-        readinessProbe:
-          httpGet: # Calls an endpoint and check if returns a status code < 400
-            path: /
-            port: liveness-port
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
-          periodSeconds: 15
-        livenessProbe: # Checks if the port is open on the container
-          tcpSocket:
-            port: liveness-port
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
-          periodSeconds: 15
         resources: # We can restrict how much resources we'd like to give to containers also
           requests:
             cpu: 100m
             memory: 100Mi
-        ports:
-        - name: liveness-port
-          containerPort: 80
 ```
 
 You can apply this by running the command:
@@ -170,7 +149,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-world-service
-# namespace: random-namespace # you can likewise add a namespace to a service too
 spec:
   selector:
     run: hello-world
