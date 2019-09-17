@@ -23,6 +23,7 @@ spec:
         run: hello-world
     # This is where we define the content about what containers to use and how they should run
     spec:
+      hostNetwork: true
       containers:
       # This is the name of the container and various configurations for how it would run
       # Here we specify the name of the container
