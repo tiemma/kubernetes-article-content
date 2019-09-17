@@ -1,45 +1,37 @@
+# Since kubernetes uses an apiserver, we need to specify what particular api has deployments
 apiVersion: apps/v1
+# We need to specify what K8s object we want to create
+# We use the kind keyword to specify that, in this case, a deployment
 kind: Deployment
+# Metadata contains details which k8s resources must have
 metadata:
+  # In this deployment, we have to specify a name for the deployment
   name: hello-world
-#  namespace: random-namespace # it can be anything random
 spec:
+  # In K8s, we use selectors to specify how we want to match another object to it 
+  # e.g a service which would use this deployment would have to match the labels specified here
   selector:
+    # This would be used to match the deployment 
     matchLabels:
       run: hello-world
-  replicas: 1 # we want 1 instances of this running
-  strategy: 
-    rollingUpdate: # this ensures that if we add a new update, we only have one application down 
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
+  # We want 1 instances of this running
+  replicas: 1 
   template:
     metadata:
+      # This would use matchLabels to get the pods which fall under that particular replica set in the deployment 
       labels:
         run: hello-world
+    # This is where we define the content about what containers to use and how they should run
     spec:
-      hostNetwork: true
       containers:
+      # This is the name of the container and various configurations for how it would run
+      # Here we specify the name of the container
       - name: php-hello-world
+      # Here we specify the image for the container
         image: ichtrojan/php-hello-world
-        imagePullPolicy: IfNotPresent    
-        readinessProbe:
-          httpGet: # Calls an endpoint and check if returns a status code < 400
-            path: /
-            port: liveness-port
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
-          periodSeconds: 15
-        livenessProbe: # Checks if the port is open on the container
-          tcpSocket:
-            port: liveness-port
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
-          periodSeconds: 15
+      # This just asks how the image should be pulled into the machine it's running
+        imagePullPolicy: IfNotPresent
         resources: # We can restrict how much resources we'd like to give to containers also
           requests:
             cpu: 100m
             memory: 100Mi
-        ports: 
-        - name: liveness-port
-          containerPort: 80
