@@ -84,24 +84,38 @@ If a namespace is not specified, Kubernetes by default uses the `default` namesp
 Here's a sample deployment `yaml` template using the `ichtrojan/php-hello-world` image.
 
 ```yaml
+# Since kubernetes uses an apiserver, we need to specify what particular api has deployments
 apiVersion: apps/v1
+# We need to specify what K8s object we want to create
+# We use the kind keyword to specify that, in this case, a deployment
 kind: Deployment
+# Metadata contains details which k8s resources must have
 metadata:
+  # In this deployment, we have to specify a name for the deployment
   name: hello-world
-#  namespace: random-namespace # it can be anything random
 spec:
+  # In K8s, we use selectors to specify how we want to match another object to it 
+  # e.g a service which would use this deployment would have to match the labels specified here
   selector:
+    # This would be used to match the deployment 
     matchLabels:
       run: hello-world
-  replicas: 1 # we want 1 instances of this running
+  # We want 1 instances of this running
+  replicas: 1 
   template:
     metadata:
+      # This would use matchLabels to get the pods which fall under that particular replica set in the deployment 
       labels:
         run: hello-world
+    # This is where we define the content about what containers to use and how they should run
     spec:
       containers:
+      # This is the name of the container and various configurations for how it would run
+      # Here we specify the name of the container
       - name: php-hello-world
+      # Here we specify the image for the container
         image: ichtrojan/php-hello-world
+      # This just asks how the image should be pulled into the machine it's running
         imagePullPolicy: IfNotPresent
         resources: # We can restrict how much resources we'd like to give to containers also
           requests:
@@ -145,13 +159,21 @@ Enough of the talk, let's write a service for our hello-world application.
 
 
 ```yaml
+# This is the path where the service k8s object can be found on apiserver
 apiVersion: v1
+# Here we specify what kind of k8s object we want to create
 kind: Service
+# Here, we specify various details on the k8s object
 metadata:
+# We specify the name of the service we want to create
   name: hello-world-service
 spec:
+# Here, we specify the labels which we set on matchLabels to complete the reference
   selector:
     run: hello-world
+# To do the port mapping as discussed, we specify how each port should be handled
+# What port would be used on the container and what port would be exposed through the loadbalancer
+# We also configure what networking protocol we'd be accessing, TCP works for HTTP and other compliant protocols on its framework
   ports:
   - protocol: TCP
     port: 80
